@@ -1,9 +1,14 @@
 package com.practice.employee_ms.controller;
 
+import com.practice.employee_ms.dto.CreateEmployeeRequest;
+import com.practice.employee_ms.dto.EmployeeResponse;
+import com.practice.employee_ms.dto.UpdateEmployeeRequest;
 import com.practice.employee_ms.model.Employee;
 import com.practice.employee_ms.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,17 +30,19 @@ public class EmployeeController {
         return employeeService.getEmployeeById(id);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/employee")
-    public Employee SendData(@RequestBody Employee employee){
-        return employeeService.senddata(employee);
+    public EmployeeResponse CreateEmployee(@Valid@RequestBody CreateEmployeeRequest request){
+        return employeeService.sendData(request);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/employee/{id}")
-    public Employee UpdateEmployee(@PathVariable int id,@RequestBody Employee employee){
-        return employeeService.updateEmployee(id,employee);
+    public EmployeeResponse UpdateEmployee(@PathVariable int id,@Valid @RequestBody UpdateEmployeeRequest request){
+        return employeeService.updateEmployee(id,request);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/employee/{id}")
     public ResponseEntity<String> DeleteEmployee(@PathVariable int id){
         String msg= employeeService.deleteEmployee(id);
