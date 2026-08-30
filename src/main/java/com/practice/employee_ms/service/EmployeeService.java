@@ -3,6 +3,7 @@ package com.practice.employee_ms.service;
 import com.practice.employee_ms.dto.CreateEmployeeRequest;
 import com.practice.employee_ms.dto.EmployeeResponse;
 import com.practice.employee_ms.dto.UpdateEmployeeRequest;
+import com.practice.employee_ms.exception.EmployeeNotFoundException;
 import com.practice.employee_ms.model.Employee;
 import com.practice.employee_ms.repo.EmployeeRepo;
 import jakarta.validation.Valid;
@@ -63,7 +64,7 @@ public class EmployeeService {
     public EmployeeResponse updateEmployee(int id, UpdateEmployeeRequest request) {
         Employee emp  =repo.findById(id)
                             .orElseThrow(
-                                        ()->new RuntimeException("No Employee found of the specified id")
+                                        ()->new EmployeeNotFoundException("No Employee found of the specified id " + id)
                             );
 
         // Copy updated fields

@@ -1,14 +1,13 @@
 package com.practice.employee_ms.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
 public class UpdateEmployeeRequest {
 
     @NotEmpty
+    @Size(min = 4, max = 20)
     private String firstname;
 
     @NotEmpty
@@ -18,7 +17,7 @@ public class UpdateEmployeeRequest {
     @Email
     private String email;
 
-    @NotEmpty
+    @NotBlank
     private String department;
 
     @Positive
