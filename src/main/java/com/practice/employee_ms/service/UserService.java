@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
@@ -22,6 +21,7 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepo roleRepo;
 
+    @Transactional
     public String signup(User user) {
 
         Role role=roleRepo.findByRole("ROLE_USER").orElseThrow(()->new IllegalStateException("Default role USER_ROLE not found"));
