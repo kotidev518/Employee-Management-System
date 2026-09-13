@@ -3,12 +3,11 @@ package com.practice.employee_ms.service;
 import com.practice.employee_ms.dto.*;
 import com.practice.employee_ms.exception.EmployeeNotFoundException;
 import com.practice.employee_ms.model.Employee;
-import com.practice.employee_ms.repo.EmployeeRepo;
+import com.practice.employee_ms.repo.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -17,14 +16,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-@EnableMethodSecurity
 @RequiredArgsConstructor
 public class EmployeeService {
 
-    private final EmployeeRepo repo;
+    private final EmployeeRepository empRepo;
 
-    public List<Employee> getemployees() {
-        List<Employee> employees=repo.findAll();
+    public List<Employee> getEmployees() {
+        List<Employee> employees= empRepo.findAll();
         return  employees;
 //        return repo.findAll()
 //                .stream()
@@ -32,10 +30,8 @@ public class EmployeeService {
 //                .toList();
     }
 
-
-
     public Object getEmployeeById(int id) {
-        Employee employee=repo.findById(id)
+        Employee employee= empRepo.findById(id)
                 .orElseThrow(
                         ()-> new EmployeeNotFoundException("Employee not found")
                 );
@@ -77,17 +73,17 @@ public class EmployeeService {
 
     @Transactional
     @Secured("ROLE_ADMIN")
-    public EmployeeResponse sendData(@Valid CreateEmployeeRequest request) {
+    public EmployeeResponse createEmployee(@Valid CreateEmployeeRequest request) {
 
         Employee employee = new Employee();
 
         employee.setFirstname(request.getFirstname());
-        employee.setFirstname(request.getLastname());
+        employee.setLastname(request.getLastname());
         employee.setEmail(request.getEmail());
         employee.setDepartment(request.getDepartment());
         employee.setSalary(request.getSalary());
 
-        Employee empdata = repo.save(employee);
+        Employee empdata = empRepo.save(employee);
 
         EmployeeResponse response = new EmployeeResponse();
 
@@ -106,7 +102,7 @@ public class EmployeeService {
     @Transactional
     @Secured("ROLE_ADMIN")
     public EmployeeResponse updateEmployee(int id, UpdateEmployeeRequest request) {
-        Employee emp  =repo.findById(id)
+        Employee emp  = empRepo.findById(id)
                             .orElseThrow(
                                         ()->new EmployeeNotFoundException("No Employee found of the specified id " + id)
                             );
@@ -135,11 +131,11 @@ public class EmployeeService {
 
     @Secured("ROLE_ADMIN")
     public String deleteEmployee(int id) {
-        Employee emp =repo.findById(id)
+        Employee emp = empRepo.findById(id)
                 .orElseThrow(
-                        ()-> new RuntimeException(" Employee not Found")
+                        ()-> new EmployeeNotFoundException("Employee not found with id"+ id)
                 );
-         repo.deleteById(id);
+         empRepo.deleteById(id);
          return "Employee Data deleted";
     }
 }

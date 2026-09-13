@@ -22,7 +22,7 @@ public class EmployeeController {
 
     @GetMapping("/employees")
     public List<Employee> getEmployees(){
-        return employeeService.getemployees();
+        return employeeService.getEmployees();
     }
 
     @GetMapping("/employee/{id}")
@@ -32,19 +32,19 @@ public class EmployeeController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/employee")
-    public EmployeeResponse CreateEmployee(@Valid@RequestBody CreateEmployeeRequest request){
-        return employeeService.sendData(request);
+    public EmployeeResponse createEmployee(@Valid@RequestBody CreateEmployeeRequest request){
+        return employeeService.createEmployee(request);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/employee/{id}")
-    public EmployeeResponse UpdateEmployee(@PathVariable int id,@Valid @RequestBody UpdateEmployeeRequest request){
+    public EmployeeResponse updateEmployee(@PathVariable int id,@Valid @RequestBody UpdateEmployeeRequest request){
         return employeeService.updateEmployee(id,request);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/employee/{id}")
-    public ResponseEntity<String> DeleteEmployee(@PathVariable int id){
+    public ResponseEntity<String> deleteEmployee(@PathVariable int id){
         String msg= employeeService.deleteEmployee(id);
         return ResponseEntity.ok(msg);
     }

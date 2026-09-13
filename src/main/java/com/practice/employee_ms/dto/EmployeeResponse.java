@@ -2,6 +2,8 @@ package com.practice.employee_ms.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class EmployeeResponse {
     private Integer id;
@@ -9,5 +11,5 @@ public class EmployeeResponse {
     private String lastname;
     private String email;
     private String department;
-    private Integer salary;
+    private BigDecimal salary;
 }

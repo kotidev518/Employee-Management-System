@@ -3,6 +3,8 @@ package com.practice.employee_ms.dto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class UpdateEmployeeRequest {
 
@@ -21,5 +23,5 @@ public class UpdateEmployeeRequest {
     private String department;
 
     @Positive
-    private Integer salary;
+    private BigDecimal salary;
 }

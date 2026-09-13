@@ -2,8 +2,8 @@ package com.practice.employee_ms.service;
 
 import com.practice.employee_ms.model.Role;
 import com.practice.employee_ms.model.User;
-import com.practice.employee_ms.repo.RoleRepo;
-import com.practice.employee_ms.repo.UserRepo;
+import com.practice.employee_ms.repo.RoleRepository;
+import com.practice.employee_ms.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,14 +17,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final UserRepo repo;
+    private final UserRepository repo;
     private final PasswordEncoder passwordEncoder;
-    private final RoleRepo roleRepo;
+    private final RoleRepository roleRepository;
 
     @Transactional
     public String signup(User user) {
 
-        Role role=roleRepo.findByRole("ROLE_USER").orElseThrow(()->new IllegalStateException("Default role USER_ROLE not found"));
+        Role role= roleRepository.findByRole("ROLE_USER").orElseThrow(()->new IllegalStateException("Default role USER_ROLE not found"));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(role);
         repo.save(user);
