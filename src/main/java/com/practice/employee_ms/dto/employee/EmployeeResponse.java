@@ -1,14 +1,14 @@
-package com.practice.employee_ms.dto;
+package com.practice.employee_ms.dto.employee;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class EmployeeAdminResponse {
+public class EmployeeResponse {
     private Integer id;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String email;
     private String department;
     private BigDecimal salary;

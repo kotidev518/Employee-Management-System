@@ -1,7 +1,7 @@
-package com.practice.employee_ms.dto;
+package com.practice.employee_ms.dto.employee;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,17 +14,17 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class CreateEmployeeRequest {
 
-    @NotEmpty
+    @NotBlank
     private String firstname;
 
-    @NotEmpty
+    @NotBlank
     private String lastname;
 
-    @NotEmpty
+    @NotBlank
     @Email
     private String email;
 
-    @NotEmpty
+    @NotBlank
     private String department;
 
     @Positive

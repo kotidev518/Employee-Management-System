@@ -1,7 +1,10 @@
 package com.practice.employee_ms.service;
 
-import com.practice.employee_ms.dto.*;
+import com.practice.employee_ms.dto.employee.CreateEmployeeRequest;
+import com.practice.employee_ms.dto.employee.EmployeeResponse;
+import com.practice.employee_ms.dto.employee.UpdateEmployeeRequest;
 import com.practice.employee_ms.exception.EmployeeNotFoundException;
+import com.practice.employee_ms.mapper.EmployeeMapper;
 import com.practice.employee_ms.model.Employee;
 import com.practice.employee_ms.repo.EmployeeRepository;
 import jakarta.transaction.Transactional;
@@ -20,14 +23,15 @@ import java.util.Objects;
 public class EmployeeService {
 
     private final EmployeeRepository empRepo;
+    private final EmployeeMapper employeeMapper;
 
-    public List<Employee> getEmployees() {
-        List<Employee> employees= empRepo.findAll();
-        return  employees;
-//        return repo.findAll()
-//                .stream()
-//                .map(this::mapToUserResponse)
-//                .toList();
+    public List<EmployeeResponse> getEmployees() {
+//        List<Employee> employees= empRepo.findAll();
+//        return  employees;
+        return empRepo.findAll()
+                .stream()
+                .map(employeeMapper::toResponse)
+                .toList();
     }
 
     public Object getEmployeeById(int id) {
@@ -42,34 +46,12 @@ public class EmployeeService {
         boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(auth -> Objects.equals(auth.getAuthority(), "ROLE_ADMIN"));
         if(isAdmin){
-            return mapToAdminResponse(employee);
+            return employeeMapper.mapToAdminResponse(employee);
         }
-        return mapToUserResponse(employee);
+        return employeeMapper.mapToUserResponse(employee);
     }
 
-    private EmployeeUserResponse mapToUserResponse(Employee employee) {
-        EmployeeUserResponse response = new EmployeeUserResponse();
 
-        response.setId(employee.getId());
-        response.setFirstname(employee.getFirstname());
-        response.setLastname(employee.getLastname());
-        response.setDepartment(employee.getDepartment());
-
-        return response;
-    }
-
-    private EmployeeAdminResponse mapToAdminResponse(Employee employee) {
-        EmployeeAdminResponse response = new EmployeeAdminResponse();
-
-        response.setId(employee.getId());
-        response.setFirstname(employee.getFirstname());
-        response.setLastname(employee.getLastname());
-        response.setEmail(employee.getEmail());
-        response.setDepartment(employee.getDepartment());
-        response.setSalary(employee.getSalary());
-
-        return response;
-    }
 
     @Transactional
     @Secured("ROLE_ADMIN")
@@ -83,16 +65,16 @@ public class EmployeeService {
         employee.setDepartment(request.getDepartment());
         employee.setSalary(request.getSalary());
 
-        Employee empdata = empRepo.save(employee);
+        Employee empData = empRepo.save(employee);
 
         EmployeeResponse response = new EmployeeResponse();
 
-        response.setId(empdata.getId());
-        response.setFirstname(empdata.getFirstname());
-        response.setLastname(empdata.getLastname());
-        response.setEmail(empdata.getEmail());
-        response.setDepartment(empdata.getDepartment());
-        response.setSalary(empdata.getSalary());
+        response.setId(empData.getId());
+        response.setFirstName(empData.getFirstname());
+        response.setLastName(empData.getLastname());
+        response.setEmail(empData.getEmail());
+        response.setDepartment(empData.getDepartment());
+        response.setSalary(empData.getSalary());
 
         return response;
 
@@ -119,8 +101,8 @@ public class EmployeeService {
         EmployeeResponse response = new EmployeeResponse();
 
         response.setId(emp.getId());
-        response.setFirstname(emp.getFirstname());
-        response.setLastname(emp.getLastname());
+        response.setFirstName(emp.getFirstname());
+        response.setLastName(emp.getLastname());
         response.setEmail(emp.getEmail());
         response.setDepartment(emp.getDepartment());
         response.setSalary(emp.getSalary());

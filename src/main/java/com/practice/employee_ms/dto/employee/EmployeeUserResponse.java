@@ -1,4 +1,4 @@
-package com.practice.employee_ms.dto;
+package com.practice.employee_ms.dto.employee;
 
 import lombok.Data;
 

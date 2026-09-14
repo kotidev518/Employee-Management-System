@@ -1,9 +1,8 @@
 package com.practice.employee_ms.controller;
 
-import com.practice.employee_ms.dto.CreateEmployeeRequest;
-import com.practice.employee_ms.dto.EmployeeResponse;
-import com.practice.employee_ms.dto.UpdateEmployeeRequest;
-import com.practice.employee_ms.model.Employee;
+import com.practice.employee_ms.dto.employee.CreateEmployeeRequest;
+import com.practice.employee_ms.dto.employee.EmployeeResponse;
+import com.practice.employee_ms.dto.employee.UpdateEmployeeRequest;
 import com.practice.employee_ms.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping("/employees")
-    public List<Employee> getEmployees(){
+    public List<EmployeeResponse> getEmployees(){
         return employeeService.getEmployees();
     }
 
