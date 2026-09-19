@@ -54,7 +54,7 @@ public class EmployeeService {
 
 
     @Transactional
-    @Secured("ROLE_ADMIN")
+//    @Secured("ROLE_ADMIN")
     public EmployeeResponse createEmployee(@Valid CreateEmployeeRequest request) {
 
         Employee employee = new Employee();
@@ -82,7 +82,7 @@ public class EmployeeService {
     }
 
     @Transactional
-    @Secured("ROLE_ADMIN")
+//    @Secured("ROLE_ADMIN")
     public EmployeeResponse updateEmployee(int id, UpdateEmployeeRequest request) {
         Employee emp  = empRepo.findById(id)
                             .orElseThrow(
@@ -111,7 +111,7 @@ public class EmployeeService {
     }
 
 
-    @Secured("ROLE_ADMIN")
+//    @Secured("ROLE_ADMIN")
     public String deleteEmployee(int id) {
         Employee emp = empRepo.findById(id)
                 .orElseThrow(

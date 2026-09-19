@@ -1,6 +1,7 @@
 package com.practice.employee_ms.service;
 
 import com.practice.employee_ms.dto.auth.RegisterRequest;
+import com.practice.employee_ms.exception.DuplicateResourceException;
 import com.practice.employee_ms.model.Role;
 import com.practice.employee_ms.model.User;
 import com.practice.employee_ms.repo.RoleRepository;
@@ -26,11 +27,11 @@ public class UserService implements UserDetailsService {
     public String signUp(RegisterRequest request) {
 
         if((repo.findByUsername(request.getUsername())).isPresent()) {
-            throw new IllegalStateException("Username already Exists");
+            throw new DuplicateResourceException("Username already Exists");
         }
 
         if((repo.findByEmail(request.getEmail())).isPresent()){
-            throw new IllegalStateException("Email already exists");
+            throw new DuplicateResourceException("Email already exists");
         }
         User user = new User();
 
@@ -58,12 +59,6 @@ public class UserService implements UserDetailsService {
         return toUserDetails(user);
     }
 
-
-//    public UserDetails loadUserByEmail(String email) throws IllegalArgumentException{
-//        User user=repo.findByEmail(email).orElseThrow(()->new IllegalArgumentException("Email not found"));
-//        return toUserDetails(user);
-//    }
-
     private UserDetails toUserDetails(User user) {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
@@ -75,5 +70,6 @@ public class UserService implements UserDetailsService {
                                 .toList()
                 )
                 .build();
+
     }
 }
