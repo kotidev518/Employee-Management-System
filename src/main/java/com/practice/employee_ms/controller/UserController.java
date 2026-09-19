@@ -1,8 +1,12 @@
 package com.practice.employee_ms.controller;
 
+import com.practice.employee_ms.dto.auth.LoginRequest;
+import com.practice.employee_ms.dto.auth.LoginResponse;
+import com.practice.employee_ms.dto.auth.RegisterRequest;
 import com.practice.employee_ms.jwt.JwtService;
 import com.practice.employee_ms.model.User;
 import com.practice.employee_ms.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,24 +28,26 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> SignUp(@RequestBody User user){
-        String msg= userService.signup(user);
-        return ResponseEntity.ok(msg);
+    public ResponseEntity<String> signUp(@Valid @RequestBody RegisterRequest request){
+        String msg= userService.signUp(request);
+        return ResponseEntity.ok().body(msg);
     }
 
     @PostMapping("/login")
-    public String SignIn(@RequestBody User user){
+    public ResponseEntity<LoginResponse> SignIn(@Valid @RequestBody LoginRequest request){
         Authentication authentication=authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        user.getUsername(),
-                         user.getPassword())
+                        request.getUsername(),
+                         request.getPassword())
         );
         //System.out.println(authentication.getPrincipal());
 
         UserDetails userDetails= (UserDetails) authentication.getPrincipal();
 
         String token= jwtService.generateToken(userDetails);
-        return token;
+
+        LoginResponse response = new LoginResponse(token,"Bearer");
+        return ResponseEntity.ok(response);
     }
 
     

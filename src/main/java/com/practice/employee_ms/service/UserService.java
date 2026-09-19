@@ -1,5 +1,6 @@
 package com.practice.employee_ms.service;
 
+import com.practice.employee_ms.dto.auth.RegisterRequest;
 import com.practice.employee_ms.model.Role;
 import com.practice.employee_ms.model.User;
 import com.practice.employee_ms.repo.RoleRepository;
@@ -22,9 +23,25 @@ public class UserService implements UserDetailsService {
     private final RoleRepository roleRepository;
 
     @Transactional
-    public String signup(User user) {
+    public String signUp(RegisterRequest request) {
 
-        Role role= roleRepository.findByRole("ROLE_USER").orElseThrow(()->new IllegalStateException("Default role USER_ROLE not found"));
+        if((repo.findByUsername(request.getUsername())).isPresent()) {
+            throw new IllegalStateException("Username already Exists");
+        }
+
+        if((repo.findByEmail(request.getEmail())).isPresent()){
+            throw new IllegalStateException("Email already exists");
+        }
+        User user = new User();
+
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+
+        Role role= roleRepository.findByRole("ROLE_USER")
+                .orElseThrow(
+                        ()->new IllegalStateException("Default role USER_ROLE not found")
+                );
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(role);
         repo.save(user);
@@ -32,13 +49,22 @@ public class UserService implements UserDetailsService {
         return "User Registered Successfully";
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user= repo.findByusername(username)
-                .orElseThrow(()->new RuntimeException("Username not Found"));
+        User user= repo.findByUsername(username)
+                .orElseThrow(()->new UsernameNotFoundException("Username not Found"));
 
+        return toUserDetails(user);
+    }
+
+
+//    public UserDetails loadUserByEmail(String email) throws IllegalArgumentException{
+//        User user=repo.findByEmail(email).orElseThrow(()->new IllegalArgumentException("Email not found"));
+//        return toUserDetails(user);
+//    }
+
+    private UserDetails toUserDetails(User user) {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())
