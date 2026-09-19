@@ -19,10 +19,10 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "firstname")
+    @Column(name = "firstname",nullable = false)
     private String firstname;
 
-    @Column(name = "lastname")
+    @Column(name = "lastname",nullable = false)
     private String lastname;
 
     @Email
@@ -30,8 +30,10 @@ public class Employee {
     private String email;
 
     @NotBlank
+    @Column(nullable = false)
     private String department;
 
     @Positive
+    @Column(precision = 10,scale = 2,nullable = false)
     private BigDecimal salary;
 }

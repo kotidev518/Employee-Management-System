@@ -112,6 +112,7 @@ public class EmployeeService {
 
 
 //    @Secured("ROLE_ADMIN")
+    @Transactional
     public String deleteEmployee(int id) {
         Employee emp = empRepo.findById(id)
                 .orElseThrow(

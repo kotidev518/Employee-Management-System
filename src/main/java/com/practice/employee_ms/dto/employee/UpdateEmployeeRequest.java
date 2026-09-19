@@ -22,6 +22,7 @@ public class UpdateEmployeeRequest {
     @NotBlank
     private String department;
 
+    @NotNull
     @Positive
     private BigDecimal salary;
 }
