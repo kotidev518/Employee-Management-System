@@ -5,7 +5,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class EmployeeAdminResponse {
+public class EmployeeAdminResponse implements EmployeeDetailsResponse{
     private Integer id;
     private String firstname;
     private String lastname;

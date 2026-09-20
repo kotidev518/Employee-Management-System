@@ -1,16 +1,17 @@
 package com.practice.employee_ms.controller;
 
 import com.practice.employee_ms.dto.employee.CreateEmployeeRequest;
+import com.practice.employee_ms.dto.employee.EmployeeDetailsResponse;
 import com.practice.employee_ms.dto.employee.EmployeeResponse;
 import com.practice.employee_ms.dto.employee.UpdateEmployeeRequest;
 import com.practice.employee_ms.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -20,18 +21,18 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping("/employees")
-    public List<EmployeeResponse> getEmployees(){
-        return employeeService.getEmployees();
+    public Page<EmployeeResponse> getEmployees(@RequestParam(required = false) String search, Pageable pageable){
+        return employeeService.getEmployees(search,pageable);
     }
 
     @GetMapping("/employee/{id}")
-    public Object getEmployeeById(@PathVariable int id){
+    public EmployeeDetailsResponse getEmployeeById(@PathVariable int id){
         return employeeService.getEmployeeById(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/employee")
-    public EmployeeResponse createEmployee(@Valid@RequestBody CreateEmployeeRequest request){
+    public EmployeeResponse createEmployee(@Valid @RequestBody CreateEmployeeRequest request){
         return employeeService.createEmployee(request);
     }
 

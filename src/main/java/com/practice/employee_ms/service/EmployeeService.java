@@ -1,6 +1,7 @@
 package com.practice.employee_ms.service;
 
 import com.practice.employee_ms.dto.employee.CreateEmployeeRequest;
+import com.practice.employee_ms.dto.employee.EmployeeDetailsResponse;
 import com.practice.employee_ms.dto.employee.EmployeeResponse;
 import com.practice.employee_ms.dto.employee.UpdateEmployeeRequest;
 import com.practice.employee_ms.exception.EmployeeNotFoundException;
@@ -10,12 +11,12 @@ import com.practice.employee_ms.repo.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -25,16 +26,22 @@ public class EmployeeService {
     private final EmployeeRepository empRepo;
     private final EmployeeMapper employeeMapper;
 
-    public List<EmployeeResponse> getEmployees() {
-//        List<Employee> employees= empRepo.findAll();
-//        return  employees;
-        return empRepo.findAll()
-                .stream()
-                .map(employeeMapper::toResponse)
-                .toList();
-    }
 
-    public Object getEmployeeById(int id) {
+    public Page<EmployeeResponse> getEmployees(String search,Pageable pageable) {
+        Page<Employee> employees;
+
+        if (search == null || search.isBlank()){
+            employees=  empRepo.findAll(pageable);
+        }
+        else {
+            employees=empRepo.findByFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrDepartmentContainingIgnoreCase(
+                    search,search,search,search,pageable
+            );
+        }
+
+        return employees.map(employeeMapper::toResponse);
+    }
+    public EmployeeDetailsResponse getEmployeeById(int id) {
         Employee employee= empRepo.findById(id)
                 .orElseThrow(
                         ()-> new EmployeeNotFoundException("Employee not found")
