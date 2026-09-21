@@ -29,7 +29,7 @@ public class SecurityConfig  {
                 .csrf(csrf->csrf.disable())
                 //.httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/login","/register","/error").permitAll()
+                        .requestMatchers("/login","/register","/error","/swagger-ui/**","/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/employees","/employee/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers(HttpMethod.POST,"/employee").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/employee/**").hasRole("ADMIN")
