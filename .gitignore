@@ -49,3 +49,6 @@ application-prod.properties
 .DS_Store
 Thumbs.db
 
+#data
+ems_backup.dump
+
