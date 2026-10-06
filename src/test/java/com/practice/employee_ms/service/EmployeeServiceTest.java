@@ -169,6 +169,9 @@ public class EmployeeServiceTest {
         when(employeeRepository.save(any(Employee.class)))
                 .thenReturn(savedEmployee);
 
+        when(employeeMapper.toResponse(savedEmployee))
+                .thenReturn(response);
+
         // Act
         EmployeeResponse result = employeeService.createEmployee(request);
 
@@ -204,6 +207,17 @@ public class EmployeeServiceTest {
 
         when(employeeRepository.findById(id))
                 .thenReturn(Optional.of(employee));
+
+        EmployeeResponse response = new EmployeeResponse();
+        response.setId(id);
+        response.setFirstName("John Updated");
+        response.setLastName("Doe");
+        response.setEmail("john.updated@example.com");
+        response.setDepartment("Engineering");
+        response.setSalary(new BigDecimal("60000"));
+
+        when(employeeMapper.toResponse(employee))
+                .thenReturn(response);
 
         // Act
         EmployeeResponse result =

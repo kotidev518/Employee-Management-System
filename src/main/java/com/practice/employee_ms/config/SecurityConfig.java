@@ -25,7 +25,6 @@ public class SecurityConfig  {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .csrf(csrf->csrf.disable())
-                //.httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(auth->auth
                         .requestMatchers("/login","/register","/error","/swagger-ui/**","/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/employees","/employee/**").hasAnyRole("USER","ADMIN")

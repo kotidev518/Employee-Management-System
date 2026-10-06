@@ -33,13 +33,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> SignIn(@Valid @RequestBody LoginRequest request){
+    public ResponseEntity<LoginResponse> signIn(@Valid @RequestBody LoginRequest request){
         Authentication authentication=authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
                          request.getPassword())
         );
-        //System.out.println(authentication.getPrincipal());
 
         UserDetails userDetails= (UserDetails) authentication.getPrincipal();
 
