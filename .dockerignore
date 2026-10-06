@@ -1,0 +1,7 @@
+.git/
+.gitignore
+.idea/
+*.iml
+*.log
+.env
+src/main/resources/application-dev.properties
