@@ -4,7 +4,6 @@ import com.practice.employee_ms.dto.auth.LoginRequest;
 import com.practice.employee_ms.dto.auth.LoginResponse;
 import com.practice.employee_ms.dto.auth.RegisterRequest;
 import com.practice.employee_ms.jwt.JwtService;
-import com.practice.employee_ms.model.User;
 import com.practice.employee_ms.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

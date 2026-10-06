@@ -1,5 +1,6 @@
 package com.practice.employee_ms.controller;
 
+import com.practice.employee_ms.config.RestAuthenticationEntryPoint;
 import com.practice.employee_ms.config.SecurityConfig;
 import com.practice.employee_ms.dto.employee.*;
 import com.practice.employee_ms.jwt.JwtService;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         SecurityAutoConfiguration.class,
         SecurityFilterAutoConfiguration.class
 })
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, RestAuthenticationEntryPoint.class})
 public class EmployeeControllerTest {
 
     @Autowired
