@@ -1,8 +1,20 @@
-FROM eclipse-temurin:21-jdk
+
+# Build stage
+FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
 
-COPY target/employee_ms.jar app.jar
+COPY . .
+
+RUN chmod +x mvnw
+RUN ./mvnw clean package -DskipTests
+
+# Runtime stage
+FROM eclipse-temurin:21-jre
+
+WORKDIR /app
+
+COPY --from=build /app/target/employee_ms.jar app.jar
 
 EXPOSE 8080
 
