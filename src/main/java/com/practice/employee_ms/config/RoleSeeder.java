@@ -14,8 +14,8 @@ public class RoleSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        seedRole("USER_ROLE");
-        seedRole("ADMIN_ROLE");
+        seedRole("ROLE_USER");
+        seedRole("ROLE_ADMIN");
     }
 
     private void seedRole(String roleName) {
